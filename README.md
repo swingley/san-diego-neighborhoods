@@ -52,4 +52,4 @@ I also put a little work into making the map work well on phones. This consisted
 
 ~~It'd be nice to add geolocation along with some point-in-polygon to tell people which neighborhood they're in. I might get to it. I might not.~~
 
-I got to it after noticing that Leaflet provides a simple way to do this](http://leafletjs.com/reference.html#map-locate). Guess all that's left is to refactor and clean up.
+I got to it after noticing that [Leaflet provides a simple way to do this](http://leafletjs.com/reference.html#map-locate). Guess all that's left is to refactor and clean up.
