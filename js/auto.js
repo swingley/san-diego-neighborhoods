@@ -23,8 +23,20 @@ hoodLayer.on("ready", function() {
       neighborhoods.push(name);
     }
   });
-  neighborhoods.sort().reverse();
+  neighborhoods.sort();
 });
+
+// So easy, thanks http://leafletjs.com/examples/mobile-example.html
+function onLocationFound(e) {
+  L.marker(e.latlng).addTo(map).bindPopup("Current approximate location.").openPopup();
+}
+function onLocationError(e) {
+  alert(e.message);
+}
+map.on("locationfound", onLocationFound);
+map.on("locationerror", onLocationError);
+map.locate();
+
 function neighborhood(feature, layer) {
   // does this feature have a property named popupContent?
   if ( feature.properties && feature.properties.name ) {
@@ -123,17 +135,19 @@ hood.addEventListener("keyup", function(e) {
     // All neighborhood names are upper case.
     return n.indexOf(val.toUpperCase()) > -1;
   }, this);
-  matches.sort(function(a, b) {
-    // Put neighborhoods that match first letter at the top of the suggestion list
-    if ( a[0] === val[0].toUpperCase() ) {
-      return -1;
+  // Put neighborhoods that match first letter at the top of the suggestion list.
+  // There's probably a more clever, more efficient way to do this with splice()
+  // ...but the code below is easier to understand.
+  var front = [], back = [];
+  for ( var i = 0, il = matches.length; i < il ; i++ ) {
+    if ( matches[i] && matches[i][0] === val[0].toUpperCase() ) {
+      front.push(matches[i]);
     } else {
-      return 1;
+      back.push(matches[i])
     }
-  });
-  showSuggestions(matches);
+  }
+  showSuggestions(front.concat(back));
 });
-
 
 function hideSuggestions() {
   suggestions.style.display = "none";
@@ -161,7 +175,6 @@ function showSuggestions(matches) {
   });
   suggestions.appendChild(frag);
 }
-
 
 function searchNeighborhoods(match) {
   match = match.toUpperCase();
