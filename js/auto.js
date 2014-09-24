@@ -23,9 +23,9 @@ hoodLayer.on("ready", function() {
       neighborhoods.push(name);
     }
   });
+  neighborhoods.sort().reverse();
 });
 function neighborhood(feature, layer) {
-  var labelOptions = { noHide: true };
   // does this feature have a property named popupContent?
   if ( feature.properties && feature.properties.name ) {
     layer.bindPopup(feature.properties.name.toLowerCase());
@@ -132,7 +132,6 @@ hood.addEventListener("keyup", function(e) {
     }
   });
   showSuggestions(matches);
-  // console.log("potential matches", matches.join(","));
 });
 
 
@@ -173,7 +172,7 @@ function searchNeighborhoods(match) {
       l.bringToFront();
       var center = l.getBounds().getCenter();
       map.setView(center);
-      map.openPopup(match, center);
+      map.openPopup(match.toLowerCase(), center);
       highlighted = l;
       l.setStyle(yellowOutline);
     } else {
